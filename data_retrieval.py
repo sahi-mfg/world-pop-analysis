@@ -7,11 +7,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 
 
 async def get_data() -> None:
-    url = " https://www.worldpop.org/rest/data/pop/wpgp"
+    url = "https://www.worldpop.org/rest/data/pop/"
     data = await http_get(url)
-    logging.info(f"Data: {data}")
-    with open("data.json", "w") as file:
-        file.write(str(data))
+    print(data)
 
 
 if __name__ == "__main__":
