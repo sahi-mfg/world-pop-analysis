@@ -1,7 +1,18 @@
+import asyncio
+import logging
 from req_http import http_get
 
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
+
+
 async def get_data() -> None:
-    url = " https://www.worldpop.org/rest/data/pop/wpgp?ISO=NGA"
+    url = " https://www.worldpop.org/rest/data/pop/wpgp"
     data = await http_get(url)
-    print(data)
+    logging.info(f"Data: {data}")
+    with open("data.json", "w") as file:
+        file.write(str(data))
+
+
+if __name__ == "__main__":
+    asyncio.run(get_data())
