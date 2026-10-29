@@ -22,7 +22,7 @@
    2025
   ],
   "last_census_year": 2021,
-  "generated_at": "2026-10-29T12:59:01+00:00",
+  "generated_at": "2026-10-29T13:03:13+00:00",
   "method": {
    "urban_centre": "Degree of Urbanisation stage 1: contiguous (4-connected) ~1 km cells with >= 1500 people/km2 and >= 50000 people, gaps <= 15 cells filled, majority rule smoothing",
    "ring_edges_km": [

@@ -4,54 +4,106 @@
   "level": "ADM2",
   "unit": "District Autonome D'Abidjan",
   "unit_id": "98640826B76853064397847",
+  "contains_centre": true,
   "worldpop": 6299996,
   "census_2021": 5616633
- },
- {
-  "city": "yamoussoukro",
-  "level": "ADM2",
-  "unit": "District Autonome De Yamoussoukro",
-  "unit_id": "98640826B30232425959699",
-  "worldpop": 420509,
-  "census_2021": 340000
- },
- {
-  "city": "san-pedro",
-  "level": "ADM2",
-  "unit": "San Pedro",
-  "unit_id": "98640826B43081365176028",
-  "worldpop": 1043109,
-  "census_2021": 390000
  },
  {
   "city": "abidjan",
   "level": "ADM3",
   "unit": "Abidjan",
   "unit_id": "97208781B76519329112770",
+  "contains_centre": true,
   "worldpop": 5599429,
   "census_2021": 5616633
+ },
+ {
+  "city": "bouake",
+  "level": "ADM2",
+  "unit": "Gbeke",
+  "unit_id": "98640826B94469137469464",
+  "contains_centre": true,
+  "worldpop": 1347918,
+  "census_2021": 832371
+ },
+ {
+  "city": "bouake",
+  "level": "ADM3",
+  "unit": "BouakÃ©",
+  "unit_id": "97208781B33562053387529",
+  "contains_centre": true,
+  "worldpop": 829136,
+  "census_2021": 832371
+ },
+ {
+  "city": "daloa",
+  "level": "ADM2",
+  "unit": "Haut-Sassandra",
+  "unit_id": "98640826B13622385448205",
+  "contains_centre": true,
+  "worldpop": 1732277,
+  "census_2021": 421879
  },
  {
   "city": "daloa",
   "level": "ADM3",
   "unit": "Daloa",
   "unit_id": "97208781B16930806216989",
+  "contains_centre": true,
   "worldpop": 420361,
   "census_2021": 421879
+ },
+ {
+  "city": "korhogo",
+  "level": "ADM2",
+  "unit": "Poro",
+  "unit_id": "98640826B2900878653745",
+  "contains_centre": true,
+  "worldpop": 1037235,
+  "census_2021": 440926
  },
  {
   "city": "korhogo",
   "level": "ADM3",
   "unit": "Korhogo",
   "unit_id": "97208781B94303292204767",
+  "contains_centre": true,
   "worldpop": 439423,
   "census_2021": 440926
+ },
+ {
+  "city": "san-pedro",
+  "level": "ADM2",
+  "unit": "San Pedro",
+  "unit_id": "98640826B43081365176028",
+  "contains_centre": true,
+  "worldpop": 1043109,
+  "census_2021": 390000
+ },
+ {
+  "city": "san-pedro",
+  "level": "ADM3",
+  "unit": "San-PÃ©dro",
+  "unit_id": "97208781B90176693202183",
+  "contains_centre": true,
+  "worldpop": 387407,
+  "census_2021": 390000
+ },
+ {
+  "city": "yamoussoukro",
+  "level": "ADM2",
+  "unit": "District Autonome De Yamoussoukro",
+  "unit_id": "98640826B30232425959699",
+  "contains_centre": true,
+  "worldpop": 420509,
+  "census_2021": 340000
  },
  {
   "city": "yamoussoukro",
   "level": "ADM3",
   "unit": "Yamoussoukro",
   "unit_id": "97208781B62420471656370",
+  "contains_centre": true,
   "worldpop": 339043,
   "census_2021": 340000
  }
