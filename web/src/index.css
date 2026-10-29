@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --color-ink-950: #08090b;
+  --color-ink-900: #0f1114;
+  --color-ink-800: #171a1f;
+  --color-ink-700: #23272e;
+  --color-ink-500: #5b636f;
+  --color-ink-300: #a3abb7;
+  --color-ink-100: #e8ebf0;
+  --color-accent: #f5a524;
+  --color-accent-soft: #f5a52433;
+  --color-teal: #2dd4bf;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink-950 text-ink-100 font-sans antialiased;
+  font-feature-settings: "tnum" 1, "cv11" 1;
+}
+
+.panel {
+  @apply rounded-2xl border border-white/[0.06] bg-ink-900/80 backdrop-blur;
+}
+
+.label {
+  @apply text-[11px] font-medium uppercase tracking-[0.14em] text-ink-500;
+}
+
+.maplibregl-ctrl-group {
+  @apply !bg-ink-800 !border !border-white/10 !shadow-none;
+}
+.maplibregl-ctrl-group button + button {
+  @apply !border-white/10;
+}
+.maplibregl-ctrl-icon {
+  filter: invert(0.85);
+}
+.maplibregl-ctrl-attrib {
+  @apply !bg-ink-950/70 !text-ink-500 text-[10px];
+}
+.maplibregl-ctrl-attrib a {
+  @apply !text-ink-300;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, #171a1f 25%, #23272e 50%, #171a1f 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  @apply rounded-lg;
+}

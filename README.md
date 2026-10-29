@@ -6,8 +6,8 @@
 
 **How fast are the world's cities growing?** This project answers that for any area on Earth
 by querying [WorldPop](https://www.worldpop.org/) — 100 m resolution gridded population
-estimates for 2000–2020 — and turning the result into growth metrics, a CLI and an
-interactive Streamlit dashboard.
+estimates for 2000–2020 — and turning the result into growth metrics, served by a FastAPI
+backend to a React + MapLibre web app (and a CLI).
 
 ## Features
 
@@ -17,27 +17,47 @@ interactive Streamlit dashboard.
 - **Geometry helpers**: bounding boxes → GeoJSON, exact spherical area for densities.
 - **Analytics** with pandas: annualised growth (robust to uneven sampling), CAGR,
   doubling time, density, base-100 index.
-- **Streamlit dashboard**: pick a preset city or draw your own bounding box, see it on a
-  map, explore KPIs and charts, download the CSV.
+- **FastAPI backend** exposing `/api/regions` and `/api/series`, with response caching and
+  clean 422/502 errors; it also serves the built frontend, so the app ships as one process.
+- **Web app** (React 19, TypeScript, Vite, Tailwind CSS 4, MapLibre GL, Recharts, TanStack
+  Query): pick a featured city or drag a rectangle on the map, explore KPIs, charts and the
+  data table, download the CSV.
 - **CLI** for scripting and reproducible exports.
-- **Tested offline**: HTTP is mocked with `httpx.MockTransport`, the dashboard is
-  exercised with Streamlit's `AppTest`; CI runs lint, format and tests on Python 3.12/3.13.
+- **Tested offline**: HTTP is mocked with `httpx.MockTransport`, the API is exercised with
+  FastAPI's `TestClient`, frontend helpers with Vitest. CI lints, tests and builds both sides.
+- **One-command deploy** with a multi-stage `Dockerfile`.
 
 ## Quick start
 
-Requires [uv](https://docs.astral.sh/uv/).
+Requires [uv](https://docs.astral.sh/uv/) and Node.js 22+.
 
 ```bash
 git clone https://github.com/sahi-mfg/world-pop-analysis.git
 cd world-pop-analysis
 uv sync
+npm --prefix web install
 ```
 
-Dashboard:
+Web app (two terminals, Vite proxies `/api` to the backend):
 
 ```bash
-uv run streamlit run streamlit_app.py
+uv run worldpop-api
 ```
+
+```bash
+npm --prefix web run dev
+```
+
+Then open http://localhost:5173.
+
+Or everything in one container, on http://localhost:8000:
+
+```bash
+docker build -t worldpop-explorer . && docker run --rm -p 8000:8000 worldpop-explorer
+```
+
+If WorldPop requires an API key for your usage, set `WORLDPOP_API_KEY`; it is sent as the
+`key` query parameter.
 
 CLI:
 
@@ -73,7 +93,7 @@ asyncio.run(main())
                                           │
                         {year: population} (one request per year, run concurrently)
                                           │
-                         pandas growth table ──► CLI · Streamlit · CSV
+                         pandas growth table ──► FastAPI ──► React app · CLI · CSV
 ```
 
 | Module | Responsibility |
@@ -82,14 +102,16 @@ asyncio.run(main())
 | `client.py` | `WorldPopClient`: retries, task polling, concurrency limit, dataset catalogue |
 | `analysis.py` | `growth_table`, `cagr`, `doubling_time`, `summarize` |
 | `regions.py` | Preset areas (Abidjan, Lagos, Kinshasa, Nairobi, Dakar, Dhaka, Paris, Tyrol) |
+| `api.py` | FastAPI app (`worldpop-api`), caching, static frontend |
 | `cli.py` | `worldpop` command |
-| `streamlit_app.py` | Dashboard |
+| `web/` | React frontend: map with rectangle drawing, KPIs, charts, table |
 
 ## Development
 
 ```bash
 uv run pytest --cov=worldpop_analysis
 uv run ruff check . && uv run ruff format .
+npm --prefix web test && npm --prefix web run build
 ```
 
 ## Data & limitations
@@ -102,5 +124,6 @@ uv run ruff check . && uv run ruff format .
 - The public stats API limits the size of the query polygon; keep areas below a few tens of
   thousands of km².
 
+Basemap © [CARTO](https://carto.com/attributions) · © OpenStreetMap contributors.
 Data © WorldPop (www.worldpop.org), licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

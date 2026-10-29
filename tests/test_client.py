@@ -113,9 +113,37 @@ def test_client_errors_are_not_retried():
         async with make_client(handler) as wp:
             await wp.total_population(GEOJSON, 2020)
 
-    with pytest.raises(httpx.HTTPStatusError):
+    with pytest.raises(WorldPopError, match="HTTP 400"):
         run(go())
     assert calls["n"] == 1
+
+
+def test_non_json_body_is_reported():
+    def handler(request):
+        return httpx.Response(
+            200, text="<html>Maintenance</html>", headers={"content-type": "text/html"}
+        )
+
+    async def go():
+        async with make_client(handler) as wp:
+            await wp.total_population(GEOJSON, 2020)
+
+    with pytest.raises(WorldPopError, match=r"non-JSON content \(text/html.*Maintenance"):
+        run(go())
+
+
+def test_api_key_is_sent(monkeypatch):
+    monkeypatch.setenv("WORLDPOP_API_KEY", "secret")
+
+    def handler(request):
+        assert request.url.params["key"] == "secret"
+        return httpx.Response(200, json=finished(1))
+
+    async def go():
+        async with make_client(handler) as wp:
+            return await wp.total_population(GEOJSON, 2020)
+
+    assert run(go()) == 1
 
 
 def test_year_out_of_range():
