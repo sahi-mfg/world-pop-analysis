@@ -12,9 +12,19 @@ dependencies = [
     "uvicorn[standard]>=0.32",
 ]
 
+[project.optional-dependencies]
+# Offline data pipeline (rasters -> JSON for the static site); not needed by the API image.
+pipeline = [
+    "numpy>=2.0",
+    "rasterio>=1.4",
+    "scipy>=1.14",
+    "shapely>=2.0",
+]
+
 [project.scripts]
 worldpop = "worldpop_analysis.cli:main"
 worldpop-api = "worldpop_analysis.api:main"
+worldpop-pipeline = "worldpop_analysis.pipeline.cli:main"
 
 [dependency-groups]
 dev = [

@@ -1,0 +1,45 @@
+name: Data
+
+# Builds the site's data from WorldPop rasters on GitHub's runners (the rasters are
+# ~11 downloads of a few tens of MB, cached between runs) and commits the JSON output.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/worldpop_analysis/pipeline/**"
+      - ".github/workflows/data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: .cache/worldpop
+          key: worldpop-R2025A-CIV-2015-2025-v1
+      - run: uv sync --locked --extra pipeline
+      - run: uv run worldpop-pipeline --admin
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/public/data data/admin_matches.json
+          if git diff --cached --quiet; then
+            echo "Data unchanged."
+            exit 0
+          fi
+          git commit -m "Update Côte d'Ivoire data from WorldPop R2025A"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
