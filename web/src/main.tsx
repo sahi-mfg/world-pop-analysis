@@ -1,5 +1,3 @@
-import "@fontsource-variable/inter";
-import "@fontsource/instrument-serif";
 import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

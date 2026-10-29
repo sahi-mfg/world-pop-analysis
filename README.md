@@ -19,9 +19,13 @@ backend to a React + MapLibre web app (and a CLI).
   doubling time, density, base-100 index.
 - **FastAPI backend** exposing `/api/regions` and `/api/series`, with response caching and
   clean 422/502 errors; it also serves the built frontend, so the app ships as one process.
-- **Web app** (React 19, TypeScript, Vite, Tailwind CSS 4, MapLibre GL, Recharts, TanStack
-  Query): pick a featured city or drag a rectangle on the map, explore KPIs, charts and the
-  data table, download the CSV.
+- **Web app** (React 19, TypeScript, Vite, Tailwind CSS 4, Radix UI, MapLibre GL, Recharts,
+  TanStack Query): pick a featured city or drag a rectangle on the map, read the finding,
+  the figures, both charts and the table, download the CSV.
+- **Design system as code**: [`DESIGN.md`](DESIGN.md) follows Google's
+  [DESIGN.md format](https://github.com/google-labs-code/design.md). The Tailwind theme is
+  generated from it, and CI lints it (including WCAG contrast) and fails if the generated
+  tokens drift.
 - **CLI** for scripting and reproducible exports.
 - **Tested offline**: HTTP is mocked with `httpx.MockTransport`, the API is exercised with
   FastAPI's `TestClient`, frontend helpers with Vitest. CI lints, tests and builds both sides.
@@ -104,7 +108,24 @@ asyncio.run(main())
 | `regions.py` | Preset areas (Abidjan, Lagos, Kinshasa, Nairobi, Dakar, Dhaka, Paris, Tyrol) |
 | `api.py` | FastAPI app (`worldpop-api`), caching, static frontend |
 | `cli.py` | `worldpop` command |
-| `web/` | React frontend: map with rectangle drawing, KPIs, charts, table |
+| `web/` | React frontend: map with rectangle drawing, figures, charts, table |
+| `DESIGN.md` | Design system: tokens and rationale, source of the Tailwind theme |
+
+## Design
+
+The interface is an analytics screen that answers one question first: *how fast has the
+population grown inside this area since 2000?* The area's name and a computed sentence
+stating the finding lead; the map carries the measured rectangle with its population
+callout; figures are set as type, not tiles; one vermilion data hue marks only what is
+measured. The rules (one typeface, no gradients, glass or eyebrows, flat panels,
+right-aligned tabular figures, honest loading and error states) are written in
+[`DESIGN.md`](DESIGN.md) and draw on the [Impeccable](https://impeccable.style) and
+[Taste Skill](https://www.tasteskill.dev) guidelines for product UI.
+
+```bash
+npm --prefix web run design:lint     # validate DESIGN.md (structure, references, contrast)
+npm --prefix web run design:tokens   # regenerate web/src/design-tokens.css from DESIGN.md
+```
 
 ## Development
 
@@ -124,6 +145,6 @@ npm --prefix web test && npm --prefix web run build
 - The public stats API limits the size of the query polygon; keep areas below a few tens of
   thousands of km².
 
-Basemap © [CARTO](https://carto.com/attributions) · © OpenStreetMap contributors.
+Basemap © [CARTO](https://carto.com/attributions) (Positron) · © OpenStreetMap contributors.
 Data © WorldPop (www.worldpop.org), licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

@@ -34,5 +34,8 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
       - run: npm ci
+      - run: npm run design:lint
+      - name: Design tokens are in sync with DESIGN.md
+        run: npm run design:tokens && git diff --exit-code src/design-tokens.css
       - run: npm test
       - run: npm run build

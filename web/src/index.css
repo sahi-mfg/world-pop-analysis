@@ -1,64 +1,109 @@
 @import "tailwindcss";
 @import "maplibre-gl/dist/maplibre-gl.css";
+/* Generated from ../DESIGN.md with `npm run design:tokens`; do not edit by hand. */
+@import "./design-tokens.css";
 
-@theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
-  --color-ink-950: #08090b;
-  --color-ink-900: #0f1114;
-  --color-ink-800: #171a1f;
-  --color-ink-700: #23272e;
-  --color-ink-500: #5b636f;
-  --color-ink-300: #a3abb7;
-  --color-ink-100: #e8ebf0;
-  --color-accent: #f5a524;
-  --color-accent-soft: #f5a52433;
-  --color-teal: #2dd4bf;
+/* The family DESIGN.md names, self-hosted from the variable font files. */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 700;
+  src: url("../node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 700;
+  src: url("../node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-html,
-body,
-#root {
-  height: 100%;
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --shadow-float: 0 4px 16px rgb(20 20 19 / 0.1);
 }
 
 body {
-  @apply bg-ink-950 text-ink-100 font-sans antialiased;
-  font-feature-settings: "tnum" 1, "cv11" 1;
+  @apply bg-neutral font-sans text-ink antialiased;
+  font-size: var(--text-body);
+  line-height: 1.45;
 }
 
-.panel {
-  @apply rounded-2xl border border-white/[0.06] bg-ink-900/80 backdrop-blur;
+/* Typography roles from DESIGN.md: size, weight and tracking travel together. */
+@utility type-title {
+  font-size: var(--text-title);
+  font-weight: var(--font-weight-title);
+  letter-spacing: var(--tracking-title);
+  line-height: 1.25;
+}
+@utility type-section {
+  font-size: var(--text-section);
+  font-weight: var(--font-weight-section);
+  line-height: 1.4;
+}
+@utility type-figure-lead {
+  font-size: var(--text-figure-lead);
+  font-weight: var(--font-weight-figure-lead);
+  letter-spacing: var(--tracking-figure-lead);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-figure {
+  font-size: var(--text-figure);
+  font-weight: var(--font-weight-figure);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-body {
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-body);
+  line-height: 1.45;
+}
+@utility type-label {
+  font-size: var(--text-label);
+  font-weight: var(--font-weight-label);
+  line-height: 1.4;
+}
+@utility type-small {
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-small);
+  line-height: 1.4;
 }
 
-.label {
-  @apply text-[11px] font-medium uppercase tracking-[0.14em] text-ink-500;
+::selection {
+  background: var(--color-primary-tint);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Flat loading bars at the size of the value they stand in for (no shimmer). */
+.placeholder {
+  @apply rounded-chip bg-active;
+}
+
+* {
+  scrollbar-color: var(--color-control) transparent;
+  scrollbar-width: thin;
 }
 
 .maplibregl-ctrl-group {
-  @apply !bg-ink-800 !border !border-white/10 !shadow-none;
-}
-.maplibregl-ctrl-group button + button {
-  @apply !border-white/10;
-}
-.maplibregl-ctrl-icon {
-  filter: invert(0.85);
+  @apply !rounded-control !border !border-border !shadow-none;
 }
 .maplibregl-ctrl-attrib {
-  @apply !bg-ink-950/70 !text-ink-500 text-[10px];
-}
-.maplibregl-ctrl-attrib a {
-  @apply !text-ink-300;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
-  }
-}
-.skeleton {
-  background: linear-gradient(90deg, #171a1f 25%, #23272e 50%, #171a1f 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s linear infinite;
-  @apply rounded-lg;
+  @apply !bg-surface/80 text-[11px] !text-muted;
 }

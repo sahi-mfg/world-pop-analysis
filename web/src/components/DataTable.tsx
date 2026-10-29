@@ -1,31 +1,35 @@
+import { Download } from "lucide-react";
 import type { Row } from "../api";
-import { formatInt, formatPct, toCsv } from "../format";
+import { formatInt, formatPct, formatSigned } from "../format";
+import Panel from "./Panel";
 
-export default function DataTable({ rows, filename }: { rows: Row[]; filename: string }) {
-  const download = () => {
-    const url = URL.createObjectURL(new Blob([toCsv(rows)], { type: "text/csv" }));
-    const a = Object.assign(document.createElement("a"), { href: url, download: filename });
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+const HEAD = ["Year", "Population", "Change", "Growth per year", "People per km²", "Index (first year = 100)"];
 
+export default function DataTable({ rows, onExport }: { rows: Row[]; onExport: () => void }) {
   return (
-    <div className="panel overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4">
-        <h3 className="text-sm font-medium">Data</h3>
+    <Panel
+      title="All samples"
+      subtitle={`${rows.length} sample years`}
+      action={
         <button
-          onClick={download}
-          className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-ink-300 transition hover:border-white/25 hover:text-ink-100"
+          onClick={onExport}
+          className="inline-flex h-control-height shrink-0 items-center gap-1.5 rounded-control border border-control bg-surface px-3 type-label hover:bg-raised"
         >
-          Download CSV
+          <Download className="size-3.5" strokeWidth={1.75} />
+          Export CSV
         </button>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm tabular-nums">
+      }
+    >
+      <div className="mt-2 overflow-x-auto">
+        <table className="num w-full min-w-[640px] type-body">
           <thead>
-            <tr className="border-y border-white/[0.06] text-left">
-              {["Year", "Population", "Change", "Growth / yr", "Density / km²", "Index"].map((h, i) => (
-                <th key={h} className={`label px-5 py-2.5 font-medium ${i ? "text-right" : ""}`}>
+            <tr>
+              {HEAD.map((h, i) => (
+                <th
+                  key={h}
+                  scope="col"
+                  className={`h-9 px-card-pad type-small font-normal text-faint ${i ? "text-right" : "sticky left-0 bg-surface text-left"}`}
+                >
                   {h}
                 </th>
               ))}
@@ -33,20 +37,22 @@ export default function DataTable({ rows, filename }: { rows: Row[]; filename: s
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.year} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
-                <td className="px-5 py-2.5 text-ink-300">{r.year}</td>
-                <td className="px-5 py-2.5 text-right">{formatInt(r.population)}</td>
-                <td className="px-5 py-2.5 text-right text-ink-300">
-                  {r.change == null ? "—" : `${r.change > 0 ? "+" : ""}${formatInt(r.change)}`}
+              <tr key={r.year} className="border-t border-rule">
+                <th scope="row" className="sticky left-0 h-row-height bg-surface px-card-pad text-left font-normal">
+                  {r.year}
+                </th>
+                <td className="px-card-pad text-right">{formatInt(r.population)}</td>
+                <td className="px-card-pad text-right text-muted">
+                  {r.change == null ? "—" : formatSigned(formatInt(r.change), r.change)}
                 </td>
-                <td className="px-5 py-2.5 text-right text-ink-300">{formatPct(r.annual_growth_pct, 2)}</td>
-                <td className="px-5 py-2.5 text-right text-ink-300">{formatInt(r.density_per_km2)}</td>
-                <td className="px-5 py-2.5 text-right text-ink-500">{r.index_100.toFixed(0)}</td>
+                <td className="px-card-pad text-right text-muted">{formatPct(r.annual_growth_pct, 2)}</td>
+                <td className="px-card-pad text-right text-muted">{formatInt(r.density_per_km2)}</td>
+                <td className="px-card-pad text-right text-muted">{r.index_100.toFixed(0)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </Panel>
   );
 }
