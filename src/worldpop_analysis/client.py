@@ -10,7 +10,9 @@ handled transparently by :meth:`WorldPopClient.total_population`.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
+import os
 from collections.abc import Iterable
 from typing import Any, Self
 
@@ -28,6 +30,17 @@ DEFAULT_DATASET = "wpgppop"
 AVAILABLE_YEARS = range(2000, 2021)
 
 _RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+
+
+def sample_years(start: int, end: int, step: int) -> list[int]:
+    if step < 1:
+        raise ValueError("step must be >= 1")
+    if start not in AVAILABLE_YEARS or end not in AVAILABLE_YEARS or start > end:
+        raise ValueError(f"years must satisfy {AVAILABLE_YEARS.start} <= start <= end <= 2020")
+    years = list(range(start, end + 1, step))
+    if years[-1] != end:
+        years.append(end)
+    return years
 
 
 class WorldPopError(RuntimeError):
@@ -51,6 +64,7 @@ class WorldPopClient:
         poll_interval: float = 2.0,
         poll_timeout: float = 300.0,
         concurrency: int = 4,
+        api_key: str | None = None,
         transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         self._http = httpx.AsyncClient(
@@ -61,6 +75,7 @@ class WorldPopClient:
             },
             follow_redirects=True,
         )
+        self.api_key = api_key if api_key is not None else os.environ.get("WORLDPOP_API_KEY")
         self.max_retries = max_retries
         self.poll_interval = poll_interval
         self.poll_timeout = poll_timeout
@@ -85,8 +100,7 @@ class WorldPopClient:
                     raise WorldPopError(f"network error calling {url}: {exc}") from exc
             else:
                 if response.status_code not in _RETRYABLE_STATUS:
-                    response.raise_for_status()
-                    return response.json()
+                    return _decode(response)
                 if attempt == self.max_retries:
                     raise WorldPopError(f"{url} kept failing with HTTP {response.status_code}")
             delay = 2**attempt * 0.5
@@ -101,6 +115,8 @@ class WorldPopClient:
         if dataset == DEFAULT_DATASET and year not in AVAILABLE_YEARS:
             raise ValueError(f"{dataset} covers {AVAILABLE_YEARS.start}-{AVAILABLE_YEARS.stop - 1}")
         params = {"dataset": dataset, "year": year, "geojson": dumps(geojson), "runasync": "false"}
+        if self.api_key:
+            params["key"] = self.api_key
         async with self._semaphore:
             payload = await self._get_json(f"{STATS_API}/services/stats", params)
             payload = await self._wait_for_task(payload)
@@ -136,6 +152,48 @@ class WorldPopClient:
         """Raster datasets published for a country (titles, years and download links)."""
         payload = await self._get_json(f"{CATALOG_API}/{alias}/{level}", {"iso3": iso3.upper()})
         return payload.get("data", [])
+
+
+def _decode(response: httpx.Response) -> dict[str, Any]:
+    """JSON body of a successful response, or an error that shows what came back instead."""
+    snippet = " ".join(response.text[:200].split()) or "<empty body>"
+    where = f"{response.request.method} {response.url.copy_with(query=None)}"
+    if response.is_error:
+        raise WorldPopError(f"{where} returned HTTP {response.status_code}: {snippet}")
+    try:
+        return response.json()
+    except ValueError as exc:
+        payload = _salvage_json(response.text)
+        if payload is not None:
+            log.debug("ignored non-JSON noise around the response from %s", where)
+            return payload
+        content_type = response.headers.get("content-type", "unknown")
+        raise WorldPopError(
+            f"{where} returned non-JSON content ({content_type}, HTTP {response.status_code}): "
+            f"{snippet}"
+        ) from exc
+
+
+def _salvage_json(text: str) -> dict[str, Any] | None:
+    """The JSON object in a body polluted by server-side noise, if there is one.
+
+    api.worldpop.org currently prints PHP deprecation notices as HTML before its JSON
+    (still with HTTP 200), so the body is not valid JSON as a whole. The payload is the
+    last top-level JSON object in the body.
+    """
+    decoder = json.JSONDecoder()
+    found = None
+    pos = text.find("{")
+    while pos != -1:
+        try:
+            obj, end = decoder.raw_decode(text, pos)
+        except ValueError:
+            pos = text.find("{", pos + 1)
+            continue
+        if isinstance(obj, dict):
+            found = obj
+        pos = text.find("{", end)
+    return found
 
 
 def _extract_population(payload: dict[str, Any]) -> float:

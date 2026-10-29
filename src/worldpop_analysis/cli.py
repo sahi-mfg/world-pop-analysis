@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 from worldpop_analysis.analysis import growth_table, summarize
-from worldpop_analysis.client import AVAILABLE_YEARS, WorldPopClient, WorldPopError
+from worldpop_analysis.client import WorldPopClient, WorldPopError, sample_years
 from worldpop_analysis.geometry import BBox
 from worldpop_analysis.regions import REGIONS
 
@@ -33,17 +33,6 @@ def build_parser() -> argparse.ArgumentParser:
     datasets = sub.add_parser("datasets", help="raster datasets published for a country")
     datasets.add_argument("iso3", help="ISO 3166-1 alpha-3 code, e.g. CIV")
     return parser
-
-
-def sample_years(start: int, end: int, step: int) -> list[int]:
-    if step < 1:
-        raise ValueError("step must be >= 1")
-    if start not in AVAILABLE_YEARS or end not in AVAILABLE_YEARS or start > end:
-        raise ValueError(f"years must satisfy {AVAILABLE_YEARS.start} <= start <= end <= 2020")
-    years = list(range(start, end + 1, step))
-    if years[-1] != end:
-        years.append(end)
-    return years
 
 
 async def _series(args: argparse.Namespace) -> int:
