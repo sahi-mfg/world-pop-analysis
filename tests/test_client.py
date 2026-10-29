@@ -118,6 +118,42 @@ def test_client_errors_are_not_retried():
     assert calls["n"] == 1
 
 
+PHP_NOTICE = (
+    "<br />\n<b>Deprecated</b>:  Return type of Pimple\\Container::offsetExists($id) should "
+    "either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the "
+    "#[\\ReturnTypeWillChange] attribute should be used in <b>/srv/www/Container.php</b> "
+    "on line <b>133</b><br />\n"
+)
+
+
+def test_json_after_php_notices_is_recovered():
+    body = PHP_NOTICE * 3 + json.dumps(finished(1234.5))
+
+    def handler(request):
+        return httpx.Response(200, text=body, headers={"content-type": "text/html; charset=UTF-8"})
+
+    async def go():
+        async with make_client(handler) as wp:
+            return await wp.total_population(GEOJSON, 2010)
+
+    assert run(go()) == 1234.5
+
+
+def test_task_polling_survives_php_notices():
+    def handler(request):
+        if request.url.path.endswith("/services/stats"):
+            payload = {"status": "created", "error": False, "taskid": "t1"}
+        else:
+            payload = finished(7)
+        return httpx.Response(200, text=PHP_NOTICE + json.dumps(payload))
+
+    async def go():
+        async with make_client(handler) as wp:
+            return await wp.total_population(GEOJSON, 2010)
+
+    assert run(go()) == 7
+
+
 def test_non_json_body_is_reported():
     def handler(request):
         return httpx.Response(

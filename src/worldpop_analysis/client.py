@@ -10,6 +10,7 @@ handled transparently by :meth:`WorldPopClient.total_population`.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import os
 from collections.abc import Iterable
@@ -162,11 +163,37 @@ def _decode(response: httpx.Response) -> dict[str, Any]:
     try:
         return response.json()
     except ValueError as exc:
+        payload = _salvage_json(response.text)
+        if payload is not None:
+            log.debug("ignored non-JSON noise around the response from %s", where)
+            return payload
         content_type = response.headers.get("content-type", "unknown")
         raise WorldPopError(
             f"{where} returned non-JSON content ({content_type}, HTTP {response.status_code}): "
             f"{snippet}"
         ) from exc
+
+
+def _salvage_json(text: str) -> dict[str, Any] | None:
+    """The JSON object in a body polluted by server-side noise, if there is one.
+
+    api.worldpop.org currently prints PHP deprecation notices as HTML before its JSON
+    (still with HTTP 200), so the body is not valid JSON as a whole. The payload is the
+    last top-level JSON object in the body.
+    """
+    decoder = json.JSONDecoder()
+    found = None
+    pos = text.find("{")
+    while pos != -1:
+        try:
+            obj, end = decoder.raw_decode(text, pos)
+        except ValueError:
+            pos = text.find("{", pos + 1)
+            continue
+        if isinstance(obj, dict):
+            found = obj
+        pos = text.find("{", end)
+    return found
 
 
 def _extract_population(payload: dict[str, Any]) -> float:
