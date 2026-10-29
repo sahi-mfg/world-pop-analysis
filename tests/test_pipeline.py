@@ -146,8 +146,17 @@ def test_admin_matches_sum_people_inside_units(tmp_path):
             "coordinates": [[[-5.5, 6.0], [-4.5, 6.0], [-4.5, 7.0], [-5.5, 7.0], [-5.5, 6.0]]],
         },
     }
-    other = {**unit, "properties": {"shapeName": "Elsewhere", "shapeID": "X2"}}
-    rows = run.admin_matches(path, {4: {"features": [unit, other]}}, (CITY,))
-    assert len(rows) == 1
-    assert rows[0]["unit"] == "Sous-préfecture de Testville"
+    # Same footprint, other spelling: found because it contains the city centre.
+    variant = {**unit, "properties": {"shapeName": "Testvile", "shapeID": "X2"}}
+    away = {
+        "type": "Feature",
+        "properties": {"shapeName": "Elsewhere", "shapeID": "X3"},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[-5.5, 6.0], [-5.4, 6.0], [-5.4, 6.1], [-5.5, 6.1], [-5.5, 6.0]]],
+        },
+    }
+    rows = run.admin_matches(path, {4: {"features": [unit, variant, away]}}, (CITY,))
+    assert [r["unit"] for r in rows] == ["Sous-préfecture de Testville", "Testvile"]
+    assert all(r["contains_centre"] for r in rows)
     assert rows[0]["worldpop"] == pytest.approx(float(pop[pop > 0].sum(dtype=np.float64)), rel=1e-4)

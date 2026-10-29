@@ -17,7 +17,7 @@ import rasterio.mask
 from affine import Affine
 from rasterio import features
 from shapely import set_precision, unary_union
-from shapely.geometry import mapping, shape
+from shapely.geometry import Point, mapping, shape
 
 from worldpop_analysis.pipeline import config, urban
 from worldpop_analysis.pipeline.config import City
@@ -102,17 +102,22 @@ def _normalise(name: str) -> str:
 def admin_matches(
     path: Path, units_by_level: dict[int, dict], cities: tuple[City, ...]
 ) -> list[dict]:
-    """WorldPop population of every administrative unit whose name contains a city's name.
+    """WorldPop population of the administrative units each city's census figure may refer to.
 
-    This is a diagnostic: it shows which unit the census figure most plausibly refers to.
+    A unit qualifies when it contains the city's centre point or carries the city's name
+    (names alone miss spelling variants such as "Bouake" against "Bouaké"). This is a
+    diagnostic: it shows which unit the census figure most plausibly describes.
     """
     rows = []
     with rasterio.open(path) as src:
         for level, units in sorted(units_by_level.items()):
             for feature in units["features"]:
                 unit_name = feature["properties"].get("shapeName", "")
+                geometry = shape(feature["geometry"])
                 for city in cities:
-                    if _normalise(city.name) not in _normalise(unit_name):
+                    by_name = _normalise(city.name) in _normalise(unit_name)
+                    by_point = geometry.contains(Point(city.lon, city.lat))
+                    if not (by_name or by_point):
                         continue
                     data, _ = rasterio.mask.mask(
                         src, [feature["geometry"]], crop=True, filled=True, nodata=0
@@ -125,11 +130,12 @@ def admin_matches(
                             "level": f"ADM{level}",
                             "unit": unit_name,
                             "unit_id": feature["properties"].get("shapeID"),
+                            "contains_centre": bool(by_point),
                             "worldpop": round(float(values.sum())),
                             "census_2021": city.census_2021,
                         }
                     )
-    return rows
+    return sorted(rows, key=lambda r: (r["city"], r["level"]))
 
 
 def _round(value: float | None, digits: int = 0) -> float | int | None:
