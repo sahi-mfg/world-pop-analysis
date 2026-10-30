@@ -1,0 +1,923 @@
+{
+ "meta": {
+  "country": "CIV",
+  "dataset": {
+   "name": "WorldPop Global2 population counts, constrained, 100 m",
+   "release": "R2025A v1",
+   "doi": "10.5258/SOTON/WP00839",
+   "url": "https://hub.worldpop.org/geodata/listing?id=135",
+   "license": "CC BY 4.0"
+  },
+  "years": [
+   2015,
+   2016,
+   2017,
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "last_census_year": 2021,
+  "generated_at": "2026-10-29T13:03:13+00:00",
+  "method": {
+   "urban_centre": "Degree of Urbanisation stage 1: contiguous (4-connected) ~1 km cells with >= 1500 people/km2 and >= 50000 people, gaps <= 15 cells filled, majority rule smoothing",
+   "ring_edges_km": [
+    0,
+    5,
+    10,
+    20,
+    30
+   ]
+  }
+ },
+ "national": [
+  {
+   "year": 2015,
+   "population": 24880382,
+   "urban_centres": 33,
+   "urban_centre_population": 9115351
+  },
+  {
+   "year": 2016,
+   "population": 25612303,
+   "urban_centres": 33,
+   "urban_centre_population": 9397496
+  },
+  {
+   "year": 2017,
+   "population": 26366506,
+   "urban_centres": 36,
+   "urban_centre_population": 9857815
+  },
+  {
+   "year": 2018,
+   "population": 27100237,
+   "urban_centres": 38,
+   "urban_centre_population": 10238723
+  },
+  {
+   "year": 2019,
+   "population": 27828108,
+   "urban_centres": 39,
+   "urban_centre_population": 10594877
+  },
+  {
+   "year": 2020,
+   "population": 28557910,
+   "urban_centres": 41,
+   "urban_centre_population": 10979457
+  },
+  {
+   "year": 2021,
+   "population": 29272989,
+   "urban_centres": 41,
+   "urban_centre_population": 11274844
+  },
+  {
+   "year": 2022,
+   "population": 30006484,
+   "urban_centres": 42,
+   "urban_centre_population": 11626842
+  },
+  {
+   "year": 2023,
+   "population": 30783520,
+   "urban_centres": 44,
+   "urban_centre_population": 12053274
+  },
+  {
+   "year": 2024,
+   "population": 31547788,
+   "urban_centres": 45,
+   "urban_centre_population": 12417575
+  },
+  {
+   "year": 2025,
+   "population": 32320672,
+   "urban_centres": 45,
+   "urban_centre_population": 12727067
+  }
+ ],
+ "cities": [
+  {
+   "key": "abidjan",
+   "name": "Abidjan",
+   "center": [
+    -4.0197,
+    5.3236
+   ],
+   "census_2021": {
+    "population": 5616633,
+    "source": "UN-Habitat, Programme pays Côte d'Ivoire (2023), from RGPH 2021",
+    "approximate": false
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 5116303,
+     "urban_centre_area_km2": 484.7,
+     "rings": [
+      804154,
+      2223685,
+      2173329,
+      172032
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 5267914,
+     "urban_centre_area_km2": 485.6,
+     "rings": [
+      827599,
+      2288353,
+      2238292,
+      177186
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 5423856,
+     "urban_centre_area_km2": 486.4,
+     "rings": [
+      852136,
+      2354140,
+      2305704,
+      182623
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 5573921,
+     "urban_centre_area_km2": 486.4,
+     "rings": [
+      875730,
+      2418592,
+      2370990,
+      188115
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 5730331,
+     "urban_centre_area_km2": 492.4,
+     "rings": [
+      898873,
+      2482087,
+      2436669,
+      193431
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 5879896,
+     "urban_centre_area_km2": 492.4,
+     "rings": [
+      922472,
+      2545332,
+      2502527,
+      198866
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 6039333,
+     "urban_centre_area_km2": 502.7,
+     "rings": [
+      945434,
+      2606802,
+      2567689,
+      204246
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 6200760,
+     "urban_centre_area_km2": 509.5,
+     "rings": [
+      968858,
+      2669546,
+      2634993,
+      209809
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 6360558,
+     "urban_centre_area_km2": 509.5,
+     "rings": [
+      993728,
+      2735701,
+      2706567,
+      215726
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 6519297,
+     "urban_centre_area_km2": 511.2,
+     "rings": [
+      1018053,
+      2800868,
+      2776934,
+      221609
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 6679402,
+     "urban_centre_area_km2": 512.1,
+     "rings": [
+      1042674,
+      2866667,
+      2848174,
+      227600
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bouake",
+   "name": "Bouaké",
+   "center": [
+    -5.03,
+    7.69
+   ],
+   "census_2021": {
+    "population": 832371,
+    "source": "UN-Habitat, Programme pays Côte d'Ivoire (2023), from RGPH 2021",
+    "approximate": false
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 612226,
+     "urban_centre_area_km2": 91.9,
+     "rings": [
+      530902,
+      137562,
+      70876,
+      96070
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 630134,
+     "urban_centre_area_km2": 91.9,
+     "rings": [
+      546203,
+      141859,
+      73040,
+      98911
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 648488,
+     "urban_centre_area_km2": 91.9,
+     "rings": [
+      561821,
+      146450,
+      75251,
+      101856
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 667573,
+     "urban_centre_area_km2": 92.7,
+     "rings": [
+      576892,
+      151047,
+      77407,
+      104713
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 686931,
+     "urban_centre_area_km2": 94.4,
+     "rings": [
+      591914,
+      155572,
+      79519,
+      107535
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 704696,
+     "urban_centre_area_km2": 94.4,
+     "rings": [
+      606543,
+      160521,
+      81656,
+      110382
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 722004,
+     "urban_centre_area_km2": 94.4,
+     "rings": [
+      620734,
+      165481,
+      83770,
+      113193
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 739728,
+     "urban_centre_area_km2": 94.4,
+     "rings": [
+      635142,
+      170764,
+      85909,
+      116097
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 778477,
+     "urban_centre_area_km2": 103.0,
+     "rings": [
+      650428,
+      176377,
+      88141,
+      119188
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 798844,
+     "urban_centre_area_km2": 103.8,
+     "rings": [
+      665423,
+      181932,
+      90328,
+      122240
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 819360,
+     "urban_centre_area_km2": 104.7,
+     "rings": [
+      680489,
+      187581,
+      92600,
+      125339
+     ]
+    }
+   ]
+  },
+  {
+   "key": "korhogo",
+   "name": "Korhogo",
+   "center": [
+    -5.6296,
+    9.458
+   ],
+   "census_2021": {
+    "population": 440926,
+    "source": "UN-Habitat, Programme pays Côte d'Ivoire (2023), from RGPH 2021",
+    "approximate": false
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 317304,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      326204,
+      40226,
+      87660,
+      103659
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 326503,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      335686,
+      41492,
+      90239,
+      106769
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 335918,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      345427,
+      42844,
+      92917,
+      109949
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 344937,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      354816,
+      44240,
+      95513,
+      113057
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 353933,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      364170,
+      45608,
+      98057,
+      116143
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 362854,
+     "urban_centre_area_km2": 58.4,
+     "rings": [
+      373470,
+      47033,
+      100572,
+      119259
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 372888,
+     "urban_centre_area_km2": 59.3,
+     "rings": [
+      382544,
+      48457,
+      103036,
+      122331
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 385283,
+     "urban_centre_area_km2": 61.8,
+     "rings": [
+      391868,
+      49932,
+      105549,
+      125474
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 394841,
+     "urban_centre_area_km2": 61.8,
+     "rings": [
+      401688,
+      51549,
+      108208,
+      128816
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 404236,
+     "urban_centre_area_km2": 61.8,
+     "rings": [
+      411339,
+      53146,
+      110814,
+      132107
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 415668,
+     "urban_centre_area_km2": 63.5,
+     "rings": [
+      421009,
+      54837,
+      113454,
+      135443
+     ]
+    }
+   ]
+  },
+  {
+   "key": "daloa",
+   "name": "Daloa",
+   "center": [
+    -6.4502,
+    6.8774
+   ],
+   "census_2021": {
+    "population": 421879,
+    "source": "UN-Habitat, Programme pays Côte d'Ivoire (2023), from RGPH 2021",
+    "approximate": false
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 288558,
+     "urban_centre_area_km2": 52.9,
+     "rings": [
+      296781,
+      24426,
+      64284,
+      149657
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 296945,
+     "urban_centre_area_km2": 52.9,
+     "rings": [
+      305426,
+      25167,
+      66215,
+      154098
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 305577,
+     "urban_centre_area_km2": 52.9,
+     "rings": [
+      314350,
+      25952,
+      68177,
+      158636
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 315492,
+     "urban_centre_area_km2": 54.6,
+     "rings": [
+      323036,
+      26718,
+      70060,
+      163071
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 323881,
+     "urban_centre_area_km2": 54.6,
+     "rings": [
+      331659,
+      27468,
+      71919,
+      167477
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 332265,
+     "urban_centre_area_km2": 54.6,
+     "rings": [
+      340274,
+      28245,
+      73769,
+      171898
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 340447,
+     "urban_centre_area_km2": 54.6,
+     "rings": [
+      348690,
+      29017,
+      75592,
+      176225
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 348765,
+     "urban_centre_area_km2": 54.6,
+     "rings": [
+      357272,
+      29884,
+      77447,
+      180603
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 359096,
+     "urban_centre_area_km2": 55.4,
+     "rings": [
+      366566,
+      30768,
+      79279,
+      185156
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 369791,
+     "urban_centre_area_km2": 57.1,
+     "rings": [
+      375665,
+      31647,
+      81105,
+      189650
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 378731,
+     "urban_centre_area_km2": 57.1,
+     "rings": [
+      384785,
+      32550,
+      82999,
+      194214
+     ]
+    }
+   ]
+  },
+  {
+   "key": "san-pedro",
+   "name": "San-Pédro",
+   "center": [
+    -6.6363,
+    4.7485
+   ],
+   "census_2021": {
+    "population": 390000,
+    "source": "Connexion Ivoirienne (2022-08-03), RGPH 2021 ranking, rounded",
+    "approximate": true
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 261254,
+     "urban_centre_area_km2": 39.4,
+     "rings": [
+      228187,
+      65696,
+      26346,
+      47462
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 268899,
+     "urban_centre_area_km2": 39.4,
+     "rings": [
+      234768,
+      67725,
+      27121,
+      48868
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 276793,
+     "urban_centre_area_km2": 39.4,
+     "rings": [
+      241503,
+      69904,
+      27908,
+      50320
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 284445,
+     "urban_centre_area_km2": 39.4,
+     "rings": [
+      248013,
+      72061,
+      28674,
+      51770
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 294669,
+     "urban_centre_area_km2": 41.1,
+     "rings": [
+      254308,
+      74359,
+      29414,
+      53318
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 302423,
+     "urban_centre_area_km2": 41.1,
+     "rings": [
+      260487,
+      76846,
+      30129,
+      54812
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 309939,
+     "urban_centre_area_km2": 41.1,
+     "rings": [
+      266372,
+      79424,
+      30873,
+      56278
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 317613,
+     "urban_centre_area_km2": 41.1,
+     "rings": [
+      272510,
+      81969,
+      31669,
+      57772
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 327628,
+     "urban_centre_area_km2": 42.8,
+     "rings": [
+      278907,
+      84835,
+      32504,
+      59316
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 336996,
+     "urban_centre_area_km2": 43.6,
+     "rings": [
+      285204,
+      87663,
+      33327,
+      60827
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 345107,
+     "urban_centre_area_km2": 43.6,
+     "rings": [
+      291507,
+      90525,
+      34185,
+      62368
+     ]
+    }
+   ]
+  },
+  {
+   "key": "yamoussoukro",
+   "name": "Yamoussoukro",
+   "center": [
+    -5.2893,
+    6.8276
+   ],
+   "census_2021": {
+    "population": 340000,
+    "source": "Connexion Ivoirienne (2022-08-03), RGPH 2021 ranking, rounded",
+    "approximate": true
+   },
+   "series": [
+    {
+     "year": 2015,
+     "urban_centre_population": 167948,
+     "urban_centre_area_km2": 32.4,
+     "rings": [
+      170606,
+      85072,
+      68463,
+      80775
+     ]
+    },
+    {
+     "year": 2016,
+     "urban_centre_population": 172875,
+     "urban_centre_area_km2": 32.4,
+     "rings": [
+      175488,
+      87707,
+      70474,
+      83173
+     ]
+    },
+    {
+     "year": 2017,
+     "urban_centre_population": 204470,
+     "urban_centre_area_km2": 44.3,
+     "rings": [
+      180572,
+      90384,
+      72535,
+      85676
+     ]
+    },
+    {
+     "year": 2018,
+     "urban_centre_population": 210141,
+     "urban_centre_area_km2": 44.3,
+     "rings": [
+      185468,
+      93039,
+      74536,
+      88117
+     ]
+    },
+    {
+     "year": 2019,
+     "urban_centre_population": 217309,
+     "urban_centre_area_km2": 46.0,
+     "rings": [
+      190356,
+      95683,
+      76502,
+      90511
+     ]
+    },
+    {
+     "year": 2020,
+     "urban_centre_population": 223058,
+     "urban_centre_area_km2": 46.0,
+     "rings": [
+      195244,
+      98325,
+      78492,
+      92864
+     ]
+    },
+    {
+     "year": 2021,
+     "urban_centre_population": 232551,
+     "urban_centre_area_km2": 49.4,
+     "rings": [
+      199896,
+      101024,
+      80479,
+      95225
+     ]
+    },
+    {
+     "year": 2022,
+     "urban_centre_population": 238275,
+     "urban_centre_area_km2": 49.4,
+     "rings": [
+      204702,
+      103770,
+      82505,
+      97619
+     ]
+    },
+    {
+     "year": 2023,
+     "urban_centre_population": 244315,
+     "urban_centre_area_km2": 49.4,
+     "rings": [
+      209781,
+      106722,
+      84616,
+      100150
+     ]
+    },
+    {
+     "year": 2024,
+     "urban_centre_population": 251580,
+     "urban_centre_area_km2": 51.2,
+     "rings": [
+      214793,
+      109605,
+      86697,
+      102640
+     ]
+    },
+    {
+     "year": 2025,
+     "urban_centre_population": 257536,
+     "urban_centre_area_km2": 51.2,
+     "rings": [
+      219766,
+      112576,
+      88827,
+      105174
+     ]
+    }
+   ]
+  }
+ ]
+}

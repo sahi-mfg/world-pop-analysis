@@ -8,7 +8,7 @@ RUN npm run build
 
 # --- runtime: FastAPI serving the API and the built frontend ---
 FROM python:3.12-slim
-COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /bin/uv
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md ./
 COPY src/ src/
