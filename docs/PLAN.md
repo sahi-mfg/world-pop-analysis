@@ -17,7 +17,8 @@ far can satellite-based population models be trusted for them?
 | --- | --- | --- |
 | WorldPop Global2 R2025A, constrained, 100 m, 2015–2025 | All population measures | [hub.worldpop.org](https://hub.worldpop.org/geodata/listing?id=135), CC BY 4.0, DOI 10.5258/SOTON/WP00839 |
 | RGPH 2021 city figures | Census comparison | INS, as reported by UN-Habitat (2023) and the press |
-| geoBoundaries gbOpen, ADM2–ADM4 | Matching census figures to administrative units | [geoboundaries.org](https://www.geoboundaries.org) |
+| geoBoundaries gbOpen, ADM2–ADM3 | Matching census figures to administrative units | [geoboundaries.org](https://www.geoboundaries.org) |
+| Google Open Buildings 2.5D Temporal, 2016–2023 | Building counts measured from satellite imagery, yearly | [Google Research](https://sites.research.google/gr/open-buildings/temporal/), CC BY 4.0 and ODbL |
 
 Caveats stated on the site:
 
@@ -35,6 +36,10 @@ Caveats stated on the site:
   definition.
 - **Where growth happens:** people per distance ring around each city centre (0–5, 5–10,
   10–20, 20–30 km), every year.
+- **Measured physical growth:** buildings per distance ring and inside the 2025 urban
+  centre, every year 2016–2023, from Open Buildings Temporal. Compared ring by ring with
+  WorldPop's modelled population growth, which spreads growth almost uniformly (+28 to +38 %
+  in every ring of every city, 2015–2025).
 - **National context:** total population, number of urban centres and their combined
   population; Abidjan's share.
 
@@ -48,7 +53,16 @@ Cities: Abidjan, Bouaké, Korhogo, Daloa, San-Pédro (top five, RGPH 2021) and Y
    comparison, the footprint map 2015 → 2025, then a city explorer. Replaces the live API.
 3. **Write-up** for LinkedIn: the findings with one chart and a link.
 
+## Findings so far
+
+- WorldPop R2025A matches the 2021 census within 0.3–0.7 % for all six départements
+  (ADM3) and −0.4 % nationally: it is anchored on the census, not independent of it.
+- Urban centres hold 36.6 % of the population in 2015 and 39.4 % in 2025; their number
+  rises from 33 to 45.
+- Abidjan's urban centre gains about 430 residents a day (2015–2025) and holds half of
+  all urban-centre residents.
+
 ## Open points
 
 - Confirm San-Pédro and Yamoussoukro RGPH 2021 figures against INS publications.
-- Choose the administrative unit each census figure refers to, from `data/admin_matches.json`.
+- Census figures match the ADM3 (département) units; use those for the comparison.

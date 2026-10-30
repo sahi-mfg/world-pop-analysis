@@ -25,6 +25,7 @@ pipeline = [
 worldpop = "worldpop_analysis.cli:main"
 worldpop-api = "worldpop_analysis.api:main"
 worldpop-pipeline = "worldpop_analysis.pipeline.cli:main"
+worldpop-buildings = "worldpop_analysis.pipeline.cli:main_buildings"
 
 [dependency-groups]
 dev = [

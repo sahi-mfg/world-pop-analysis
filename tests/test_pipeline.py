@@ -160,3 +160,54 @@ def test_admin_matches_sum_people_inside_units(tmp_path):
     assert [r["unit"] for r in rows] == ["Sous-préfecture de Testville", "Testvile"]
     assert all(r["contains_centre"] for r in rows)
     assert rows[0]["worldpop"] == pytest.approx(float(pop[pop > 0].sum(dtype=np.float64)), rel=1e-4)
+
+
+def _grid(left, top, valid_cols, size=4, cell=10.0, url="a"):
+    from worldpop_analysis.pipeline import buildings
+
+    tile = buildings.Tile(url=url, crs="EPSG:32630", left=left, top=top, size_m=size * cell)
+    valid = np.zeros((size, size), dtype=bool)
+    valid[:, valid_cols] = True
+    counts = np.where(valid, 1.0, 0.0).astype(np.float32)
+    return buildings.Grid(tile=tile, counts=counts, valid=valid, cell=cell)
+
+
+def test_mosaic_counts_overlaps_once_and_keeps_each_tiles_own_data():
+    from worldpop_analysis.pipeline import buildings
+
+    # Two 4x4 tiles shifted by 2 columns; A is valid on all columns, B only on its right half,
+    # which is outside A, plus one shared column where both are valid.
+    a = _grid(0, 40, valid_cols=slice(0, 4), url="a")
+    b = _grid(20, 40, valid_cols=slice(1, 4), url="b")
+    _, _, values = buildings.mosaic_points([b, a])
+    # A: 16 cells. B's valid columns at x=30 (inside A) and x=40, 50 (outside A): 8 new cells.
+    assert values.sum() == 16 + 8
+
+
+def test_mosaic_keeps_data_where_the_earlier_tile_has_none():
+    from worldpop_analysis.pipeline import buildings
+
+    a = _grid(0, 40, valid_cols=slice(0, 1), url="a")  # valid only on its first column
+    b = _grid(0, 40, valid_cols=slice(0, 4), url="b")  # same extent, valid everywhere
+    _, _, values = buildings.mosaic_points([a, b])
+    assert values.sum() == 16
+
+
+def test_measure_points_rings_and_footprint():
+    from shapely.geometry import box
+
+    from worldpop_analysis.pipeline import buildings
+
+    xs = np.array([CITY.lon, CITY.lon + 0.07])  # ~0 km and ~7.7 km east
+    ys = np.array([CITY.lat, CITY.lat])
+    out = buildings.measure_points(
+        xs, ys, np.array([5.0, 2.0]), "EPSG:4326", CITY, box(-5.01, 6.49, -4.99, 6.51), (0, 5, 10)
+    )
+    assert out.tolist() == [5.0, 2.0, 5.0]
+
+
+def test_utm_zone_for_ivorian_cities():
+    from worldpop_analysis.pipeline import buildings
+
+    assert buildings.utm_epsg(-4.02, 5.32) == 32630  # Abidjan
+    assert buildings.utm_epsg(-6.64, 4.75) == 32629  # San-Pédro

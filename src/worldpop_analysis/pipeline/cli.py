@@ -8,7 +8,7 @@ import logging
 import re
 from pathlib import Path
 
-from worldpop_analysis.pipeline import config, run, sources
+from worldpop_analysis.pipeline import buildings, config, run, sources
 
 ROOT = Path(__file__).resolve().parents[3]
 log = logging.getLogger("worldpop_analysis.pipeline")
@@ -77,6 +77,35 @@ def main(argv: list[str] | None = None) -> int:
                 m["worldpop"],
                 m["census_2021"],
             )
+    return 0
+
+
+def main_buildings(argv: list[str] | None = None) -> int:
+    """``worldpop-buildings``: add Open Buildings counts to the pipeline's output."""
+    parser = argparse.ArgumentParser(prog="worldpop-buildings", description=main_buildings.__doc__)
+    parser.add_argument("--cache", type=Path, default=ROOT / ".cache" / "open-buildings")
+    parser.add_argument("--data", type=Path, default=ROOT / "web" / "public" / "data")
+    args = parser.parse_args(argv)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+
+    doc = json.loads((args.data / "civ.json").read_text())
+    footprints = json.loads((args.data / "footprints.geojson").read_text())
+    counts = buildings.build(config.CITIES, footprints, args.cache)
+    footprint_year = max(f["properties"]["year"] for f in footprints["features"])
+    doc = buildings.merge_into(doc, counts, footprint_year)
+    (args.data / "civ.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
+    for key, series in counts.items():
+        first, last = series[0], series[-1]
+        log.info(
+            "%-13s buildings within 30 km %s -> %s (%+.1f%%), in urban centre %s -> %s",
+            key,
+            sum(first["rings"]),
+            sum(last["rings"]),
+            (sum(last["rings"]) / max(sum(first["rings"]), 1) - 1) * 100,
+            first["urban_centre"],
+            last["urban_centre"],
+        )
     return 0
 
 

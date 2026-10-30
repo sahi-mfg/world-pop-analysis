@@ -1,7 +1,8 @@
 name: Data
 
-# Builds the site's data from WorldPop rasters on GitHub's runners (the rasters are
-# ~11 downloads of a few tens of MB, cached between runs) and commits the JSON output.
+# Builds the site's data on GitHub's runners and commits the JSON output: population from
+# WorldPop rasters (11 downloads of ~34 MB, cached), then building counts from Google Open
+# Buildings Temporal.
 on:
   workflow_dispatch:
   push:
@@ -27,10 +28,14 @@ jobs:
           python-version: "3.12"
       - uses: actions/cache@v4
         with:
-          path: .cache/worldpop
-          key: worldpop-R2025A-CIV-2015-2025-v1
+          path: |
+            .cache/worldpop
+            .cache/open-buildings
+          key: worldpop-R2025A-CIV-2015-2025-open-buildings-v1
       - run: uv sync --locked --extra pipeline
       - run: uv run worldpop-pipeline --admin
+      # Google Open Buildings tiles are read over HTTP (Cloud-Optimized GeoTIFF), not downloaded.
+      - run: uv run worldpop-buildings
       - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
